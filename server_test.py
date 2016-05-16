@@ -19,4 +19,5 @@ while True:
     f = open("files/"+filename,'w')
     f.write(body)
     f.close()
+    print filename +' saved'
     c.close()
