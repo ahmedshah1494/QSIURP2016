@@ -14,7 +14,7 @@ while True:
     [headers,body] = data.split('\n\n')
     [filename, size] = headers.split('\n')
     size = int(size)
-	body += c.recv(size)
+    body += c.recv(size)
     f = open("files/"+filename,'w')
     f.write(body)
     f.close()
