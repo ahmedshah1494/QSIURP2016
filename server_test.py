@@ -15,6 +15,7 @@ while True:
     [filename, size] = headers.split('\n')
     size = int(size)
     body += c.recv(size)
+    print data
     print "size recv = " + str(len(body))
     f = open("files/"+filename,'w')
     f.write(body)
