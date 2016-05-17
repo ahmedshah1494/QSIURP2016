@@ -11,6 +11,7 @@ while True:
     print 'Got connection from', addr
     data = ""
     filename = c.recv(512)
+    filename = filename.strip()
     size = c.recv(512)
     [size,body] = size.split('\n\n')
     print filename, size
