@@ -10,7 +10,7 @@ while True:
     c, addr = s.accept()
     print 'Got connection from', addr
     data = c.recv(512)
-
+    print data
     [headers,body] = data.split('\n\n')
     [filename, size] = headers.split('\n')
     size = int(size)

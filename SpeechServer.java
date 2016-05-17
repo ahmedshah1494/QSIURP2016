@@ -1,5 +1,6 @@
 
 
+import java.io.DataInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,8 +17,8 @@ public class SpeechServer {
 			while (true){
 				Socket cs = ss.accept();
 				System.out.println(cs.getInetAddress().getHostAddress());
-				ObjectInputStream in = new ObjectInputStream(cs.getInputStream());
-				String data = (String) in.readObject();
+				DataInputStream in = new DataInputStream(cs.getInputStream());
+				String data = in.readUTF();
 				String[] split = data.split("\n\n");
 				String headers = split[0];
 				String body = split[1];
@@ -30,7 +31,7 @@ public class SpeechServer {
 				
 				cs.close();
 			}
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
