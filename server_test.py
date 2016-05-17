@@ -14,8 +14,10 @@ while True:
     size = c.recv(512)
     [size,body] = size.split('\n\n')
     print filename, size
-    size = int(size.strip())
-    body += c.recv(size)
+    r = c.recv(8192)
+    while r:
+        body += r
+        r = c.recv(8192)
 
     print filename, size, len(body)
     # [headers,body] = data.split('\n\n')
