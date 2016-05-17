@@ -28,7 +28,7 @@ while True:
     # (bytes, addr) = c.recvfrom(size - len(body))
     # print data
     print "size recv = " + str(len(body))
-    f = open("files/"+filename,'w')
+    f = open("files/test",'w')
     f.write(body)
     f.close()
     print filename +' saved'
