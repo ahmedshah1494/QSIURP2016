@@ -13,8 +13,8 @@ while True:
     filename = c.recv(512)
     size = c.recv(512)
     size = size.strip()
-    size = int(size)
     print filename, size
+    size = int(size)
     body = c.recv(size)
 
     print filename, size, len(body)
