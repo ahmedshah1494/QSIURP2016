@@ -10,25 +10,24 @@ while True:
     c, addr = s.accept()
     print 'Got connection from', addr
     data = ""
-    filename = c.recv(512)
-    filename = filename[:filename.index('v')]
-    filename = str(filename.strip())
-    size = c.recv(512)
-    [size,body] = size.split('\n\n')
-    print filename, len(filename), size
     r = c.recv(8192)
     while r:
-        body += r
+        data += r
         r = c.recv(8192)
-
-    print filename, size, len(body)
-    # [headers,body] = data.split('\n\n')
-    # [filename, size] = headers.split('\n')
-    # size = int(size)
+    # print data
+    [headers,body] = data.split('\n\n')
+    # print headers, len(body)
+    [filename, size] = headers.split('\n')
+    filename = filter(lambda x : ord(x) >= 33 and ord(x) <= 126, filename)
+    size = filter(lambda x : ord(x) >= 33 and ord(x) <= 126, size)
+    print filename
+    print size
+    size = eval(size.strip())
     # (bytes, addr) = c.recvfrom(size - len(body))
     # print data
+    body = body[:size]
     print "size recv = " + str(len(body))
-    f = open("files/test",'w')
+    f = open("files/"+filename,'w')
     f.write(body)
     f.close()
     print filename +' saved'
