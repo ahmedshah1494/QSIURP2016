@@ -12,6 +12,7 @@ while True:
     data = ""
     filename = c.recv(512)
     size = c.recv(512)
+    print filename, size
     body = c.recv(int(size))
 
     print filename, size, len(body)
