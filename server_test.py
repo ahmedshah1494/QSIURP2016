@@ -9,13 +9,17 @@ s.listen(5)
 while True:
     c, addr = s.accept()
     print 'Got connection from', addr
-    data = c.recv(512)
+    data = ""
+    filename = c.recv(512)
+    size = c.recv(512)
+    body = c.recv(int(size))
 
-    [headers,body] = data.split('\n\n')
-    [filename, size] = headers.split('\n')
-    size = int(size)
-    body += c.recvfrom(size - len(body))
-    print data
+    print filename, size, len(body)
+    # [headers,body] = data.split('\n\n')
+    # [filename, size] = headers.split('\n')
+    # size = int(size)
+    # (bytes, addr) = c.recvfrom(size - len(body))
+    # print data
     print "size recv = " + str(len(body))
     f = open("files/"+filename,'w')
     f.write(body)
