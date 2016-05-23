@@ -27,7 +27,7 @@ while True:
 
     path = filename[:len(filename) - len(filename.split('/')[-1])]
     if not os.path.exists(path):
-        os.mkdirs(path)
+        os.makedirs(path)
     # (bytes, addr) = c.recvfrom(size - len(body))
     # print data
     body = body[:size]
