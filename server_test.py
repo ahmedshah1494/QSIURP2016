@@ -36,4 +36,5 @@ while True:
     f.write(body)
     f.close()
     print filename +' saved'
+    c.send("#")
     c.close()
