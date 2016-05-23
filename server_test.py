@@ -7,6 +7,7 @@ print host
 port = 9999
 s.bind((host,port))
 s.listen(5)
+recvCount = 0
 while True:
     c, addr = s.accept()
     print 'Got connection from', addr
@@ -21,8 +22,8 @@ while True:
     [filename, size] = headers.split('\n')
     filename = filter(lambda x : ord(x) >= 33 and ord(x) <= 126, filename)
     size = filter(lambda x : ord(x) >= 33 and ord(x) <= 126, size)
-    print filename
-    print size
+    # print filename
+    # print size
     size = eval(size.strip())
 
     path = "files/" + filename[:len(filename) - len(filename.split('/')[-1])]
@@ -36,5 +37,6 @@ while True:
     f.write(body)
     f.close()
     print filename +' saved'
-    c.send("#")
+    print recvCount
+    # c.send("#")
     c.close()
