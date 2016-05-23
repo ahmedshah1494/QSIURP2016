@@ -1,4 +1,5 @@
 import socket
+import os
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 host = '0.0.0.0'
@@ -23,6 +24,9 @@ while True:
     print filename
     print size
     size = eval(size.strip())
+
+    path = filename[:len(filename) - len(filename.split('/')[-1])]
+    if os.path.exists(filename)
     # (bytes, addr) = c.recvfrom(size - len(body))
     # print data
     body = body[:size]
