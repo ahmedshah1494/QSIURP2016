@@ -37,6 +37,7 @@ while True:
     f.write(body)
     f.close()
     print filename +' saved'
+    recvCount += 1
     print recvCount
     # c.send("#")
     c.close()
