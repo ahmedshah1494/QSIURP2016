@@ -26,7 +26,8 @@ while True:
     size = eval(size.strip())
 
     path = filename[:len(filename) - len(filename.split('/')[-1])]
-    if os.path.exists(filename)
+    if not os.path.exists(path):
+        os.mkdirs(path)
     # (bytes, addr) = c.recvfrom(size - len(body))
     # print data
     body = body[:size]
