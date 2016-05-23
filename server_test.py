@@ -42,5 +42,5 @@ recvCount = 0
 while True:
     c, addr = s.accept()
     print 'Got connection from', addr
-    t = threading.Thread(target=handleClient, args=(c))
+    t = threading.Thread(target=handleClient, args=(c,))
     t.start()
