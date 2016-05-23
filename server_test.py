@@ -1,16 +1,8 @@
 import socket
 import os
+import threading
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-host = '0.0.0.0'
-print host
-port = 9999
-s.bind((host,port))
-s.listen(5)
-recvCount = 0
-while True:
-    c, addr = s.accept()
-    print 'Got connection from', addr
+def handleClient(c):
     data = ""
     r = c.recv(8192)
     while r:
@@ -37,7 +29,17 @@ while True:
     f.write(body)
     f.close()
     print filename +' saved'
-    recvCount += 1
-    print recvCount
     # c.send("#")
     c.close()
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+host = '0.0.0.0'
+print host
+port = 9999
+s.bind((host,port))
+s.listen(5)
+recvCount = 0
+while True:
+    c, addr = s.accept()
+    print 'Got connection from', addr
+    t = threading.Thread(target=handleClient, args=(c))
