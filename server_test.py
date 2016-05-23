@@ -2,7 +2,7 @@ import socket
 import os
 import threading
 
-def handleClient(c):
+def handleClient(c,i):
     data = ""
     r = c.recv(8192)
     while r:
@@ -24,11 +24,11 @@ def handleClient(c):
     # (bytes, addr) = c.recvfrom(size - len(body))
     # print data
     body = body[:size]
-    print "size recv = " + str(len(body))
+    # print "size recv = " + str(len(body))
     f = open("files/"+filename,'w')
     f.write(body)
     f.close()
-    print filename +' saved'
+    print i, filename +' saved'
     # c.send("#")
     c.close()
 
@@ -42,5 +42,6 @@ recvCount = 0
 while True:
     c, addr = s.accept()
     print 'Got connection from', addr
-    t = threading.Thread(target=handleClient, args=(c,))
+    recvCount += 1
+    t = threading.Thread(target=handleClient, args=(c,recvCount))
     t.start()
