@@ -16,7 +16,7 @@ T.start()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 host = '0.0.0.0'
 print host
-port = 9999
+port = 9998
 s.bind((host,port))
 s.listen(5)
 recvCount = 0
