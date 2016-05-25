@@ -19,7 +19,10 @@ def task():
 			os._exit(0)
 			return	
 		for c in clients:
-			c.send("#")
+			try:
+				c.send("#")
+			except:
+				clients.remove(c)
 
 T = threading.Thread(target=task)
 T.start()
