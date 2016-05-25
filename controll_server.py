@@ -5,9 +5,10 @@ import threading
 clients = []
 
 def task():
-	t = raw_input("press Enter to start recording")
-	for c in clients:
-		c.send("#")
+	while True:
+		t = raw_input("press Enter to start recording")
+		for c in clients:
+			c.send("#")
 
 T = threading.Thread(target=task)
 T.start()
