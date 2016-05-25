@@ -3,15 +3,15 @@ import os
 import threading
 
 clients = []
+end = False
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 
 def task():
 	while True:
 		t = raw_input("press Enter to start recording")
 		if t == "exit":
-			for c in clients:
-				c.close
-			s.close()	
+			end = True
+			return	
 		for c in clients:
 			c.send("#")
 
@@ -25,7 +25,11 @@ port = 9998
 s.bind((host,port))
 s.listen(5)
 recvCount = 0
-while True:
+while end == False:
     c, addr = s.accept()
     clients.append(c)
     print 'Got connection from', addr
+
+for c in clients:
+	c.close
+s.close()
