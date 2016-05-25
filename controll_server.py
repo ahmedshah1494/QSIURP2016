@@ -30,9 +30,9 @@ def pingTask():
 			s = c.recv(1);
 			if s == ".":
 				try:
-				c.send(".")
-			except:
-				clients.remove(c)
+					c.send(".")
+				except:
+					clients.remove(c)
 
 
 T = threading.Thread(target=task)
