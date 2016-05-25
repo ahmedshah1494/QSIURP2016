@@ -23,24 +23,27 @@ def task():
 				c.send("#")
 			except:
 				clients.remove(c)
+				c.close()
 
 def pingTask():
 	while True:
+		print len(clients), "connected"
 		for c in clients:
-			s = c.recv(1);
-			print "received ", s
-			if s == ".":
+			r = c.recv(1);
+			print "received ", r
+			if r == ".":
 				try:
 					c.send(".")
 				except:
 					clients.remove(c)
+					c.close()
 
+
+# T2 = threading.Thread(target=pingTask)
+# T2.start()
 
 T1 = threading.Thread(target=task)
 T1.start()
-
-T2 = threading.Thread(target=pingTask)
-T2.start()
 
 host = '0.0.0.0'
 print host
