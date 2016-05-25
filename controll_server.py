@@ -3,17 +3,22 @@ import os
 import threading
 
 clients = []
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 
 def task():
 	while True:
 		t = raw_input("press Enter to start recording")
+		if t == "exit":
+			for c in clients:
+				c.close
+			s.close()	
 		for c in clients:
 			c.send("#")
 
 T = threading.Thread(target=task)
 T.start()
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+
 host = '0.0.0.0'
 print host
 port = 9998
