@@ -35,9 +35,11 @@ def pingTask():
 					clients.remove(c)
 
 
-T = threading.Thread(target=task)
-T.start()
+T1 = threading.Thread(target=task)
+T1.start()
 
+T2 = threading.Thread(target=pingTask)
+T2.start()
 
 host = '0.0.0.0'
 print host
