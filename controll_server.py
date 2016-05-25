@@ -28,6 +28,7 @@ def pingTask():
 	while True:
 		for c in clients:
 			s = c.recv(1);
+			print "received ", s
 			if s == ".":
 				try:
 					c.send(".")
