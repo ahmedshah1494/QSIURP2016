@@ -24,6 +24,17 @@ def task():
 			except:
 				clients.remove(c)
 
+def pingTask():
+	while True:
+		for c in clients:
+			s = c.recv(1);
+			if s == ".":
+				try:
+				c.send(".")
+			except:
+				clients.remove(c)
+
+
 T = threading.Thread(target=task)
 T.start()
 
