@@ -9,7 +9,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 def task():
 	while True:
 		t = raw_input("press Enter to start recording")
-		if t == "exit":
+		if "exit" in t:
 			end = True
 			return	
 		for c in clients:
