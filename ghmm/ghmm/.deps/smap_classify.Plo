@@ -1,5 +1,0 @@
-smap_classify.lo: smap_classify.c ../config.h ghmmconfig.h
-
-../config.h:
-
-ghmmconfig.h:
