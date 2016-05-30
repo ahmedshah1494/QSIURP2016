@@ -22,7 +22,7 @@ def learn(mixtureSizes, trainFiles):
 	# print "files Read"
 	for i in range(len(train_set)):
 		ts = train_set[i]
-		gmm = mixture.GMM(n_components=mixtureSizes[i],covariance_type='full',min_covar=1.0,verbose=1)
+		gmm = mixture.GMM(n_components=mixtureSizes[i],covariance_type='diag',min_covar=1.0,verbose=1)
 		gmm.fit(ts)
 		GMMs.append(gmm)
 
@@ -114,8 +114,8 @@ def testPerFile(testFolders, Classes, GMMs, prefix):
 for i in range(0,11,2):
 	GMMs = learn([(2**i)]*2, [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"])
 	test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, "noOverlap")
-	testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
+	testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap_diagCov")
 
-GMMs = learn([1,1], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"])
-testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
+# GMMs = learn([1,1], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"])
+# testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
 # test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, 'noOverlap')
