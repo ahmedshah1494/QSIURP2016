@@ -1,0 +1,5 @@
+scluster.lo: scluster.c ../config.h ghmmconfig.h
+
+../config.h:
+
+ghmmconfig.h:

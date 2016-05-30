@@ -1,0 +1,132 @@
+Last login: Sun May 29 11:46:25 on ttys000
+Muhammad-Shah:ghmm Ahmed$ ssh mshah1@NSL-N01.QATAR.CMU.LOCAL
+mshah1@nsl-n01.qatar.cmu.local's password: 
+Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.16.0-57-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+
+ System information disabled due to load higher than 2.0
+
+Last login: Thu May 26 14:28:54 2016 from 172.20.100.235
+mshah1@nsl-n01:~$ sudo pip install sklearn
+[sudo] password for mshah1: 
+sudo: pip: command not found
+mshah1@nsl-n01:~$ apt-get install pip
+E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
+E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+mshah1@nsl-n01:~$ sudo apt-get install pip
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+E: Unable to locate package pip
+mshah1@nsl-n01:~$ sudo easy_install pip
+sudo: easy_install: command not found
+mshah1@nsl-n01:~$ sudo apt-get install python-setuptools python-dev build-essential.
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Note, selecting 'crossbuild-essential-arm64' for regex 'build-essential.'
+Note, selecting 'crossbuild-essential-armhf' for regex 'build-essential.'
+Note, selecting 'crossbuild-essential-powerpc' for regex 'build-essential.'
+Note, selecting 'crossbuild-essential-ppc64el' for regex 'build-essential.'
+You might want to run 'apt-get -f install' to correct these:
+The following packages have unmet dependencies:
+ crossbuild-essential-arm64 : Depends: libc6-dev:arm64 but it is not installable
+                              Depends: gcc-aarch64-linux-gnu (>= 4.7.2-3) but it is not going to be installed
+                              Depends: g++-aarch64-linux-gnu (>= 4.7.2-3) but it is not going to be installed
+                              Depends: pkg-config-aarch64-linux-gnu but it is not going to be installed
+                              Depends: dpkg-cross but it is not going to be installed
+ crossbuild-essential-armhf : Depends: libc6-dev:armhf but it is not installable
+                              Depends: gcc-arm-linux-gnueabihf (>= 4.7.2-3) but it is not going to be installed
+                              Depends: g++-arm-linux-gnueabihf (>= 4.7.2-3) but it is not going to be installed
+                              Depends: pkg-config-arm-linux-gnueabihf but it is not going to be installed
+                              Depends: dpkg-cross but it is not going to be installed
+ crossbuild-essential-powerpc : Depends: libc6-dev:powerpc but it is not installable
+                                Depends: gcc-powerpc-linux-gnu (>= 4.7.2-3) but it is not going to be installed
+                                Depends: g++-powerpc-linux-gnu (>= 4.7.2-3) but it is not going to be installed
+                                Depends: pkg-config-powerpc-linux-gnu but it is not going to be installed
+                                Depends: dpkg-cross but it is not going to be installed
+ crossbuild-essential-ppc64el : Depends: libc6-dev:ppc64el but it is not installable
+                                Depends: gcc-powerpc64le-linux-gnu (>= 4.7.2-3) but it is not going to be installed
+                                Depends: g++-powerpc64le-linux-gnu (>= 4.7.2-3) but it is not going to be installed
+                                Depends: pkg-config-powerpc64le-linux-gnu but it is not going to be installed
+                                Depends: dpkg-cross but it is not going to be installed
+ linux-image-extra-3.16.0-60-generic : Depends: linux-image-3.16.0-60-generic but it is not going to be installed
+ linux-image-extra-3.16.0-71-generic : Depends: linux-image-3.16.0-71-generic but it is not going to be installed
+ linux-image-generic-lts-utopic : Depends: linux-image-3.16.0-71-generic but it is not going to be installed
+ python-dev : Depends: libpython-dev (= 2.7.5-5ubuntu3) but it is not going to be installed
+              Depends: python2.7-dev (>= 2.7.5-1~) but it is not going to be installed
+ python-setuptools : Depends: python-pkg-resources (= 3.3-1ubuntu2) but 3.3-1ubuntu1 is to be installed
+E: Unmet dependencies. Try 'apt-get -f install' with no packages (or specify a solution).
+mshah1@nsl-n01:~$ sudo apt-get -f install
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Correcting dependencies... Done
+The following packages were automatically installed and are no longer required:
+  linux-headers-3.16.0-51 linux-headers-3.16.0-51-generic
+  linux-headers-3.16.0-52 linux-headers-3.16.0-52-generic
+  linux-headers-3.16.0-53 linux-headers-3.16.0-53-generic
+  linux-headers-3.16.0-55 linux-headers-3.16.0-55-generic
+  linux-headers-3.16.0-56 linux-headers-3.16.0-56-generic
+  linux-headers-3.16.0-59 linux-headers-3.16.0-59-generic
+  linux-headers-3.16.0-60 linux-headers-3.16.0-60-generic
+  linux-image-3.16.0-51-generic linux-image-3.16.0-52-generic
+  linux-image-3.16.0-53-generic linux-image-3.16.0-55-generic
+  linux-image-3.16.0-56-generic linux-image-3.16.0-59-generic
+  linux-image-3.16.0-60-generic linux-image-extra-3.16.0-51-generic
+  linux-image-extra-3.16.0-52-generic linux-image-extra-3.16.0-53-generic
+  linux-image-extra-3.16.0-55-generic linux-image-extra-3.16.0-56-generic
+  linux-image-extra-3.16.0-59-generic linux-image-extra-3.16.0-60-generic
+Use 'apt-get autoremove' to remove them.
+The following extra packages will be installed:
+  linux-image-3.16.0-60-generic linux-image-3.16.0-71-generic
+Suggested packages:
+  fdutils linux-lts-utopic-tools
+The following NEW packages will be installed:
+  linux-image-3.16.0-60-generic linux-image-3.16.0-71-generic
+0 upgraded, 2 newly installed, 0 to remove and 158 not upgraded.
+12 not fully installed or removed.
+Need to get 0 B/32.4 MB of archives.
+After this operation, 90.7 MB of additional disk space will be used.
+Do you want to continue? [Y/n] Y
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = "en_US:en",
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale: Cannot set LC_ALL to default locale: No such file or directory
+(Reading database ... 320920 files and directories currently installed.)
+Preparing to unpack .../linux-image-3.16.0-71-generic_3.16.0-71.92~14.04.1_amd64.deb ...
+locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale: Cannot set LC_ALL to default locale: No such file or directory
+Done.
+Unpacking linux-image-3.16.0-71-generic (3.16.0-71.92~14.04.1) ...
+dpkg: error processing archive /var/cache/apt/archives/linux-image-3.16.0-71-generic_3.16.0-71.92~14.04.1_amd64.deb (--unpack):
+ cannot copy extracted data for './boot/System.map-3.16.0-71-generic' to '/boot/System.map-3.16.0-71-generic.dpkg-new': failed to write (No space left on device)
+No apport report written because the error message indicates a disk full error
+                                                                              dpkg-deb: error: subprocess paste was killed by signal (Broken pipe)
+Examining /etc/kernel/postrm.d .
+run-parts: executing /etc/kernel/postrm.d/initramfs-tools 3.16.0-71-generic /boot/vmlinuz-3.16.0-71-generic
+run-parts: executing /etc/kernel/postrm.d/zz-update-grub 3.16.0-71-generic /boot/vmlinuz-3.16.0-71-generic
+Preparing to unpack .../linux-image-3.16.0-60-generic_3.16.0-60.80~14.04.1_amd64.deb ...
+locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale: Cannot set LC_ALL to default locale: No such file or directory
+Done.
+Unpacking linux-image-3.16.0-60-generic (3.16.0-60.80~14.04.1) ...
+dpkg: error processing archive /var/cache/apt/archives/linux-image-3.16.0-60-generic_3.16.0-60.80~14.04.1_amd64.deb (--unpack):
+ cannot copy extracted data for './boot/vmlinuz-3.16.0-60-generic' to '/boot/vmlinuz-3.16.0-60-generic.dpkg-new': failed to write (No space left on device)
+No apport report written because the error message indicates a disk full error
+                                                                              Examining /etc/kernel/postrm.d .
+run-parts: executing /etc/kernel/postrm.d/initramfs-tools 3.16.0-60-generic /boot/vmlinuz-3.16.0-60-generic
+run-parts: executing /etc/kernel/postrm.d/zz-update-grub 3.16.0-60-generic /boot/vmlinuz-3.16.0-60-generic
+dpkg-deb: error: subprocess paste was killed by signal (Broken pipe)
+Errors were encountered while processing:
+ /var/cache/apt/archives/linux-image-3.16.0-71-generic_3.16.0-71.92~14.04.1_amd64.deb
+ /var/cache/apt/archives/linux-image-3.16.0-60-generic_3.16.0-60.80~14.04.1_amd64.deb
+E: Sub-process /usr/bin/dpkg returned an error code (1)
+mshah1@nsl-n01:~$ 

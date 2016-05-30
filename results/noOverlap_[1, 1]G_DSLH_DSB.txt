@@ -1,6 +1,6 @@
 classes: 
 	0. files/DataSets/LectureHall.test
 	1. files/DataSets/Bathroom.test
-0.505093481149
-[23651, 33346]
-[3528, 13982]
+0.385433464383
+[14300, 43225]
+[2889, 14621]

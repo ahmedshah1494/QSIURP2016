@@ -111,10 +111,11 @@ def testPerFile(testFolders, Classes, GMMs, prefix):
 
 
 
-# for i in range(0,11,2):
-# 	GMMs = learn([(2**i)]*2, [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"])
-# 	test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, "noOverlap")
+for i in range(0,11,2):
+	GMMs = learn([(2**i)]*2, [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"])
+	test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, "noOverlap")
+	testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
 
-GMMs = learn([16,1], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"])
-# testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
-test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, 'noOverlap')
+GMMs = learn([1,1], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"])
+testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
+# test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, 'noOverlap')

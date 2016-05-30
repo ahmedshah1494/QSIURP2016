@@ -1,0 +1,5 @@
+scanner.lo: scanner.c ../config.h ghmmconfig.h
+
+../config.h:
+
+ghmmconfig.h:

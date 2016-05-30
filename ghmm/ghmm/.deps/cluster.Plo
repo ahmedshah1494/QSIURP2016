@@ -1,0 +1,5 @@
+cluster.lo: cluster.c ../config.h ghmmconfig.h
+
+../config.h:
+
+ghmmconfig.h:
