@@ -1,5 +1,7 @@
 import os
 from random import shuffle
+import math
+
 d = 'files/'
 files = os.listdir('files/')
 
@@ -13,11 +15,16 @@ def makeFeatFiles():
 
 			for j in range(len(wavs)):
 				wav = wavs[j]
+				# print wav
 				f_feat = open(d+f+'/'+wav+".feat",'w')
 				f_mfcc = open(d+f+'/'+wav+".mfcc", 'r')
 				f_fbe = open(d+f+'/'+wav+".fbe",'r')
 				lines_mfcc = f_mfcc.readlines()
 				lines_fbe = f_fbe.readlines()
+				
+				lines_fbe = filter(lambda x : "NaN" not in x, lines_fbe)
+				lines_fbe = map(lambda x : map(lambda x2 : str(math.log(float(x2) + 1e-6)), x.split(',')),lines_fbe)
+				lines_fbe = map(lambda x1 : reduce(lambda x,y : x + "," + y, x1), lines_fbe)
 				# shuffle(lines_fbe)
 				# shuffle(lines_mfcc)
 				f_mfcc.close()
