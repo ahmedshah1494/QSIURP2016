@@ -203,7 +203,7 @@ for c1 in test_rooms:
 		sys.stdout.write("\r%s %s %d" % ("testing",c1,i))
 		sys.stdout.flush()
 		obsSeq = obsSeqs[i]
-		pred = train_rooms[np.argmax(map(lambda x : HMMs[x].test(obsSeq),test_rooms))]
+		pred = train_rooms[np.argmax(map(lambda x : HMMs[x].test(obsSeq),train_rooms))]
 		if (actual == pred):
 			corrCount +=1
 		totalCount += 1
