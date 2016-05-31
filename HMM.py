@@ -193,40 +193,40 @@ for c in train_rooms:
 	HMMs[c].train(nIters,getObsSeq('files/%s/' % c))
 	
 
-# f = open('HMM_results.txt','w')
-# corrCount = 0
-# totalCount = 0
-# for c1 in test_rooms:
-# 	obsSeqs = getObsSeq('files/%s/' % c1)
-# 	actual = c1
-# 	for i in range(len(obsSeqs)):
-# 		sys.stdout.write("\r%s %s %d" % ("testing",c1,i))
-# 		sys.stdout.flush()
-# 		obsSeq = obsSeqs[i]
-# 		pred = alphabets[np.argmax(map(lambda x : HMMs[x].test(obsSeq),alphabets))]
-# 		if (actual == pred):
-# 			corrCount +=1
-# 		totalCount += 1
-# 		f.write("%s %d %c\n" % (actual, i, pred))
-# f.close()
-# print float(corrCount)/totalCount
+f = open('HMM_results.txt','w')
+corrCount = 0
+totalCount = 0
+for c1 in test_rooms:
+	obsSeqs = getObsSeq('files/%s/' % c1)
+	actual = c1
+	for i in range(len(obsSeqs)):
+		sys.stdout.write("\r%s %s %d" % ("testing",c1,i))
+		sys.stdout.flush()
+		obsSeq = obsSeqs[i]
+		pred = train_rooms[np.argmax(map(lambda x : HMMs[x].test(obsSeq),test_rooms))]
+		if (actual == pred):
+			corrCount +=1
+		totalCount += 1
+		f.write("%s %d %c\n" % (actual, i, pred))
+f.close()
+print float(corrCount)/totalCount
 
-# f = open('HMM_results.txt')
-# lines = f.readlines()
-# lines = map(lambda x : x.split(), lines)
-# charCorrect = {}
-# charCount = {}
-# for line in lines:
-# 	if (charCorrect.get(line[0]) == None):
-# 		charCorrect[line[0]] = 0
-# 	if (charCount.get(line[0]) == None):
-# 		charCount[line[0]] = 0
-# 	charCount[line[0]] += 1
-# 	if (line[0] == line[2]):
-# 		charCorrect[line[0]] += 1
+f = open('HMM_results.txt')
+lines = f.readlines()
+lines = map(lambda x : x.split(), lines)
+charCorrect = {}
+charCount = {}
+for line in lines:
+	if (charCorrect.get(line[0]) == None):
+		charCorrect[line[0]] = 0
+	if (charCount.get(line[0]) == None):
+		charCount[line[0]] = 0
+	charCount[line[0]] += 1
+	if (line[0] == line[2]):
+		charCorrect[line[0]] += 1
 
-# for c in charCorrect:
-# 	print c, float(charCorrect[c]) / charCount[c]
+for c in charCorrect:
+	print c, float(charCorrect[c]) / charCount[c]
 
 
 
