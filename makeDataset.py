@@ -67,9 +67,7 @@ def makeDataSet(dic):
 		class_idx += 1
 			
 makeFeatFiles()
-dic = {'BiglectureHall':['1202','2152'],
-	 'SmallLectureHall':['1030','1190','2052'],
-	 'LectureHall' : ['1030','1202','2052','1190','2152'],
+dic = {'LectureHall' : ['1030','1202','2052','1190','2152'],
 	 'Bathroom' : ["Bathroom_lockers","Bathroom2_locker"]}
 
 makeDataSet(dic)
