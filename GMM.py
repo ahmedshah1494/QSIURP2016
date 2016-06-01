@@ -3,18 +3,21 @@ from sklearn import mixture
 import os
 import multiprocessing as mp
 import time
-def makeGMM((size, ts)):
+def makeGMM(size, ts, q, i):
 	# print ts
+	print "starting worker:",os.getpid()
 	gmm = mixture.GMM(n_components=size,covariance_type='diag',min_covar=1.0,verbose=1)
 	gmm.fit(ts)
-	return gmm
+	q.put((i,gmm))
+	print "stopping worker:",os.getpid()
 
 def printMat(m):
 	for l1 in m:
 		print l1
 files_folder = 'files/'
 dataset_folder = 'files/DataSets/'
-def learn(mixtureSizes, trainFiles, pool):
+def learn((mixtureSizes, trainFiles)):
+	print "starting worker:",os.getpid()
 	train_set = []
 	
 	for filename in trainFiles:
@@ -28,16 +31,23 @@ def learn(mixtureSizes, trainFiles, pool):
 
 	# print "files Read"
 	# print train_set
-	GMMs = range(len(train_set))
-	GMMs = map(lambda i : (mixtureSizes[i],train_set[i]),GMMs)
-	GMMs = pool.map(makeGMM,GMMs)
-	# GMMs = []
-	# for i in range(len(train_set)):
-	# 	ts = train_set[i]
-	# 	gmm = mixture.GMM(n_components=mixtureSizes[i],covariance_type='diag',min_covar=1.0,verbose=1)
-	# 	gmm.fit(ts)
-	# 	GMMs.append(gmm)
-
+	# GMMs = range(len(train_set))
+	# GMMs = map(lambda i : (mixture.GMM(n_components=mixtureSizes[i],covariance_type='diag',min_covar=1.0,verbose=1),train_set[i]),GMMs)
+	# GMMs = pool.map(makeGMM,GMMs,1)
+	GMMs = []
+	for i in range(len(train_set)):
+	# 	p = mp.Process(target=makeGMM, args=(mixtureSizes[i],train_set[i],worker_q,i))
+	# 	p.start()
+	# while(not worker_q.empty()):
+	# 	GMMs.append(worker_q.get())
+	# GMMs = sorted(GMMs, key=lambda x: x[0])
+	# GMMs = map(lambda x : x[1], GMMs)
+	# print "GMMMSMMSMSDnlk",len(GMMs)
+		ts = train_set[i]
+		gmm = mixture.GMM(n_components=mixtureSizes[i],covariance_type='diag',min_covar=1.0,verbose=1)
+		gmm.fit(ts)
+		GMMs.append(gmm)
+	print "stopping worker:",os.getpid()
 	return GMMs
 
 def test(testFiles, GMMs, prefix):
@@ -123,13 +133,23 @@ def testPerFile(testFolders, Classes, GMMs, prefix):
 
 
 if __name__ == '__main__':
+	print 'main:',os.getpid()
 	pool = mp.Pool(processes=8)
+	# pool = 0
+	# worker_q = mp.Queue()
+	# main_q = mp.Queue()
 	# for i in range(0,11,2):
 	# 	GMMs = learn([(2**i)]*2, [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"], pool)
 	# 	test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, "noOverlap")
 	# 	testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap_diagCov")
 	start_time = time.time()
-	GMMs = learn([64,64], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"], pool)
+	args = [([4],[dataset_folder+"LectureHall.train"]),([4],[dataset_folder+"Bathroom.train"])]
+	GMMs = pool.map(learn,args)
+	# m = mp.Process(target=learn, args=([64,64], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"], pool))
+	# m.start()
+	# while(m.is_alive()):
+	# 	continue
+	# GMMs = learn([4,4], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"], pool)
 	print("--- %s seconds ---" % (time.time() - start_time))
 	# testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
 	# test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, 'noOverlap')
