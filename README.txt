@@ -36,6 +36,5 @@ Recording Naming Scheme:
 	- eg: Recording from Lecture Hall 1190 with phone in hand with the speaker saying sentence 0 at location 4 for the 3rd time.
 				LH_1190_H_L4_S0_2.wav
 
-Recording Device Specification:
-	- Smartphone 1:
-		
+
+

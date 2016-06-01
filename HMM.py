@@ -5,9 +5,17 @@ import os
 import sys
 import math
 sys.setrecursionlimit(10000)
+def getDiagCov(n):
+	m = []
+	for i in range(n):
+		r = [0.0] * n
+		r[i] = 1.0
+		m.append(r)
+	return m
+
 def getGaussianParams(obs):
 	if len(obs) == 0:
-		return ([0.0]*3,[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]])
+		return ([0.0]*33),getDiagCov(33)
 	means = [0] * len(obs[0])
 	for o in obs:
 		for i in range(len(o)):
@@ -161,7 +169,8 @@ def getObsSeq(d):
 	files = os.listdir(d)
 	files = filter(lambda x : '.feat' in x, files)
 	obsSeqs = []
-	for F in files:
+	for i in range(len(files)):
+		F = files[i]
 		f = open(d+F, 'r')
 		lines = f.readlines()
 		f.close()
@@ -182,9 +191,9 @@ def getObsSeq(d):
 # 	HMMs[c].train(nIters,getObsSeq('characterdata/train/%s/' % c))
 
 nStates = 7
-nIters = 2
+nIters = 20
 HMMs = {}
-train_rooms = ['1030',"bathroom_lockers"]
+train_rooms = ['1030','Bathroom_lockers']
 test_rooms = ['2052','bathroom2_locker']
 for c in train_rooms:
 	sys.stdout.write("\r%s %s" % ('training',c))
@@ -203,11 +212,11 @@ for c1 in test_rooms:
 		sys.stdout.write("\r%s %s %d" % ("testing",c1,i))
 		sys.stdout.flush()
 		obsSeq = obsSeqs[i]
-		pred = train_rooms[np.argmax(map(lambda x : HMMs[x].test(obsSeq),train_rooms))]
+		pred = test_rooms[np.argmax(map(lambda x : HMMs[x].test(obsSeq),train_rooms))]
 		if (actual == pred):
 			corrCount +=1
 		totalCount += 1
-		f.write("%s %d %c\n" % (actual, i, pred))
+		f.write("%s %d %s\n" % (actual, i, pred))
 f.close()
 print float(corrCount)/totalCount
 
