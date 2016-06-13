@@ -6,13 +6,17 @@ import time
 import dispy
 import sys
 
-def makeGMM(size, ts, q, i):
+main_dir = "/Users/Ahmed/Downloads/QSIURP2016/"
+dataset_dir = main_dir + 'files/DataSets/'
+files_dir = main_dir + 'files/'
+
+def makeGMM((size, ts)):
 	# print ts
 	print "starting worker:",os.getpid()
 	gmm = mixture.GMM(n_components=size,covariance_type='diag',min_covar=1.0,verbose=0)
 	gmm.fit(ts)
-	q.put((i,gmm))
 	print "stopping worker:",os.getpid()
+	return gmm
 
 def score((gmm,testSet)):
 	return gmm.score(testSet)
@@ -22,40 +26,50 @@ def printMat(m):
 		print l1
 files_folder = 'files/'
 dataset_folder = 'files/DataSets/'
-def learn((mixtureSize, trainFiles)):
-	print "starting worker:",os.getpid()
-	train_set = []
-	
-	for filename in trainFiles:
-			f = open(filename,'r')
-			lines = f.readlines()
-			lines = filter(lambda x : x.find("NaN") == -1, lines)
-			# print filename
-			lines = map(lambda x : map(lambda x2 : float(x2), x.split(',')), lines)
-			lines = map(lambda x : x[1:], lines)
-			# train_set.append(lines)
 
-	# print "files Read"
-	# print train_set
-	# GMMs = range(len(train_set))
-	# GMMs = map(lambda i : (mixture.GMM(n_components=mixtureSizes[i],covariance_type='diag',min_covar=1.0,verbose=1),train_set[i]),GMMs)
-	# GMMs = pool.map(makeGMM,GMMs,1)
+def learn(mixtureSize, trainFiles):
+	ppool = mp.Pool()
+	# train_set = []
+	
+	# for filename in trainFiles:
+	# 		f = open(filename,'r')
+	# 		lines = f.readlines()
+	# 		lines = filter(lambda x : x.find("NaN") == -1, lines)
+	# 		# print filename
+	# 		lines = map(lambda x : map(lambda x2 : float(x2), x.split(',')), lines)
+	# 		lines = map(lambda x : x[1:], lines)
+	# 		# train_set.append(lines)
+	# GMMs = []
+	# ts = lines
+	# # print map(len,ts)
+	# gmm = mixture.GMM(n_components=mixtureSize,covariance_type='diag',min_covar=1.0,verbose=0)
+	# gmm.fit(ts)
+	# # GMMs.append(gmm)
+	# print "stopping worker:",os.getpid()
+	# # return GMMs
+	# return gmm
+
+	args = []
 	GMMs = []
-	# for i in range(len(train_set)):
-	# 	p = mp.Process(target=makeGMM, args=(mixtureSizes[i],train_set[i],worker_q,i))
-	# 	p.start()
-	# while(not worker_q.empty()):
-	# 	GMMs.append(worker_q.get())
-	# GMMs = sorted(GMMs, key=lambda x: x[0])
-	# GMMs = map(lambda x : x[1], GMMs)
-	# print "GMMMSMMSMSDnlk",len(GMMs)
-	ts = lines
-	gmm = mixture.GMM(n_components=mixtureSize,covariance_type='diag',min_covar=1.0,verbose=0)
-	gmm.fit(ts)
-	# GMMs.append(gmm)
-	print "stopping worker:",os.getpid()
-	# return GMMs
-	return gmm
+	for i in range(len(trainFiles)):
+		filename = trainFiles[i]
+		f = open(dataset_dir + filename,'r')
+		lines = f.readlines()
+		f.close()
+		lines = filter(lambda x : x.find("NaN") == -1, lines)
+		# print filename
+		lines = map(lambda x : map(lambda x2 : float(x2), x.split(',')), lines)
+		lines = map(lambda x : x[1:], lines)
+		print trainFiles[i]
+		args.append((mixtureSize[i],lines))
+		# GMMs.append(mixture.GMM(n_components=mixtureSize[i],covariance_type='diag',min_covar=1.0,verbose=0))
+
+	GMMs = ppool.map(makeGMM,args)
+		
+	# print jobs
+	
+	# print GMMs
+	return GMMs
 
 def test(testFiles, GMMs, prefix):
 	test_set = []
@@ -97,7 +111,7 @@ def test(testFiles, GMMs, prefix):
 		f_res.write(str(l) + "\n")
 
 def testFile((folder,f,GMMs,n)):
-	pool = mp.pool.ThreadPool(processes=8)
+	pool = mp.pool.ThreadPool()
 	f_feat = open(folder+f, 'r')
 	lines = f_feat.readlines()
 	lines = filter(lambda x : x.find("NaN") == -1, lines)
@@ -116,7 +130,8 @@ def testFile((folder,f,GMMs,n)):
 
 def testFolder((folder, GMMs, i, n)):
 	# sys.stdout.write("%s %s %s\n" % (folder, i, n))
-	pool = mp.pool.ThreadPool(processes=8)
+	folder = files_dir + folder
+	pool = mp.pool.ThreadPool()
 	correct_count = 0
 	total = 0
 	confMat = []
@@ -152,8 +167,9 @@ def testFolder((folder, GMMs, i, n)):
 		total += 1
 	return (confMat, correct_count, total)
 
-def testPerFile(testFolders, Classes, GMMs, prefix):
-	f_res = open("results/%s_%sG_%s.txt" % (prefix, str(map(lambda x : x.get_params()['n_components'],GMMs)), filter(lambda x : x.isupper() or x =='_', reduce(lambda y,z : y + '_' + z, Classes))), 'w')
+def testPerFile(testFolders, Classes, GMMs, prefix, f_res):
+	if f_res == None:
+		f_res = open("results/%s_%sG_%s.txt" % (prefix, str(map(lambda x : x.get_params()['n_components'],GMMs)), filter(lambda x : x.isupper() or x =='_', reduce(lambda y,z : y + '_' + z, Classes))), 'w')
 	f_res.write("classes: \n")
 	ppool = mp.Pool()
 
@@ -202,37 +218,60 @@ def testPerFile(testFolders, Classes, GMMs, prefix):
 		f_res.write(str(l) + "\n")
 	f_res.close()
 
-def learnAndTest(x):
+def learnAndTest(x, trainSet, testFiles, crossVal=False, f_res=None):
 	print "size:",x
-	pool = mp.Pool(processes=8)
-	# pool = 0
-	# worker_q = mp.Queue()
-	# main_q = mp.Queue()
-	# for i in range(0,11,2):
-	# 	GMMs = learn([(2**i)]*2, [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"], pool)
-	# 	test([dataset_folder+"LectureHall.test", dataset_folder+"Bathroom.test"], GMMs, "noOverlap")
-	# 	testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap_diagCov")
-	start_time = time.time()
-	args = [(2**x,[dataset_folder+"LectureHall.train"]),(2**x,[dataset_folder+"Bathroom.train"])]
-	GMMs = pool.map(learn,args)
-	# print GMMs
-	# m = mp.Process(target=learn, args=([64,64], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"], pool))
-	# m.start()
-	# while(m.is_alive()):
-	# 	continue
-	# GMMs = learn([4,4], [dataset_folder+"LectureHall.train", dataset_folder+"Bathroom.train"], pool)
-	print x, ("--- %s seconds ---" % (time.time() - start_time))
-	start_time = time.time()
-	testPerFile([[files_folder+"1190/",files_folder+"2152/"],[files_folder+"Bathroom2_locker/"]], ["LectureHall","Bathroom"], GMMs, "perFile_noOverlap")
-	print x, ("--- %s seconds ---" % (time.time() - start_time))
+	
 
-def sqr(n):
-	time.sleep(1)
-	return n**2
+	# pool = mp.Pool()
+	start_time = time.time()
+	# args = [([2**x,2**x],[dataset_dir+"LectureHall.train", dataset_dir+"Bathroom.train"])]
+	GMMs = learn([2**x]*4,trainSet)
+	# print GMMs
+	print x, ("--- %s seconds ---" % (time.time() - start_time))
+	
+
+	
+	start_time = time.time()
+	acc = 0
+	if crossVal:
+		acc = testPerFile(testFiles, ["Bathroom","LectureHall","Office","Pantry"], GMMs, "crossVal", f_res)
+	else:
+		testPerFile(testFiles, ["Bathroom","LectureHall","Office","Pantry"], GMMs, "TEST", f_res)
+	print x, ("--- %s seconds ---" % (time.time() - start_time))
+	# testFileCluster.close()
+	# print acc
+	# return acc
+
+def doCrossValidation(x):
+	files = os.listdir(dataset_dir)
+	dic = {'LH' : filter(lambda x : (x.split('-')[0] == 'LH_CV') and (x.split('.')[1] == 'train'), files),
+	 'BR' : filter(lambda x : (x.split('-')[0] == 'BR_CV') and (x.split('.')[1] == 'train'), files),
+	 'P' : filter(lambda x : (x.split('-')[0] == 'P_CV') and (x.split('.')[1] == 'train'), files),
+	 'O' : filter(lambda x : (x.split('-')[0] == 'O_CV') and (x.split('.')[1] == 'train'), files)}
+	# print dic
+	f_res = open("results/%s_%sG_%s2.txt" % ('crossVal', [2**x]*4, dic.keys()), 'a')
+	acc = []
+	for i in range(1,len(dic['BR'])):
+		br = dic['BR'][i]
+		for j in range(3,len(dic['LH'])):
+			lh = dic['LH'][j] 
+			for k in range(len(dic['O'])):
+				o = dic['O'][k]
+				for l in range(len(dic['P'])):
+					p = dic['P'][l]
+					# print [br,lh,o,p]
+					# print map(lambda x : [(x.split('-')[1]).split('.')[0]], [br,lh,o,p])
+					print "i=%s j=%s k=%s l=%s" % (i,j,k,l)
+					acc.append(learnAndTest(x,[br,lh,o,p],map(lambda x : [(x.split('-')[1]).split('.')[0]+'/'], [br,lh,o,p]), crossVal=True, f_res=f_res))
+		break
+	f_res.write('\n\navg accuracy: %d' % (sum(acc)/len(acc)))
+	f_res.write('\n\nmax accuracy: %d' % (max(acc)))
+	f_res.close()
 if __name__ == '__main__':
 	print 'main:',os.getpid()
 	pool = mp.pool.ThreadPool()
-	pool.map(learnAndTest,range(0,8,2))
+	# pool.map(learnAndTest,range(0,9,2))
+	# learnAndTest(0,["BR_CV-BR_LB2_H.train","LH_CV-LH_2052_H.train","O_CV-O_1018_H.train","P_CV-P_CS_H.train"],[["BR_LB2_H/"],["LH_2052_H/"], ["O_1018_H/"], ["P_CS_H/"]])
 	# node1 = dispy.NodeAllocate("0.0.0.0",port=1494)
 	# node2 = dispy.NodeAllocate("0.0.0.0",port=1495)
 	# node3 = dispy.NodeAllocate("0.0.0.0",port=1496)

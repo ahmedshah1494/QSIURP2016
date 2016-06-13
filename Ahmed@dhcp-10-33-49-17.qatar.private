@@ -1,0 +1,18 @@
+#!/bin/sh
+echo "Installing Brew"
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+echo "Installing pip"
+brew install pip
+
+echo "Installing numpy"
+pip install numpy
+
+echo "Installing scipy"
+pip install scipy
+
+echo "Installing sklearn"
+pip install sklearn
+
+echo "Installing dispy"
+pip install dispy
