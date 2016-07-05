@@ -1,0 +1,4 @@
+log2c=1.0 log2g=1.0 rate=100.0
+log2c=0.0 log2g=1.0 rate=100.0
+log2c=2.0 log2g=1.0 rate=100.0
+log2c=-1.0 log2g=1.0 rate=100.0

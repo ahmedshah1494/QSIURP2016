@@ -12,7 +12,7 @@ for j = 3:numel(fldrs)
                 display(fpath)
                 [y,Fs] = audioread(fpath);
                 hamming = @(N)(0.54-0.46*cos(2*pi*[0:N-1].'/(N-1)));
-                [CCs,FBEs,frames] = mfcc(y,Fs,25,10,0.97,hamming,[50 15000],30,30,22);
+                [CCs,FBEs,frames] = mfcc(y,Fs,25,10,0.97,hamming,[50 15000],20,20,22);
                 dlmwrite(strcat(fpath,'.mfcc'),transpose(CCs));
                 dlmwrite(strcat(fpath,'.fbe'),transpose(FBEs));
             end
