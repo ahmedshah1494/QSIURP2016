@@ -1,0 +1,10 @@
+carpet:false
+ceramics:true
+chairs>3:false
+chairs[0-3]:false
+longDesk:false
+tables>2:false
+tables[0-2]:false
+wall>15ft:false
+wallFurniture:false
+windows:false
