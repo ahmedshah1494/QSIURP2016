@@ -1,8 +1,8 @@
-files_d = '/Users/Ahmed/Downloads/QSIURP2016/files/';
+files_d = 'E:/Downloads/QSIURP2016/files/';
 fldrs = dir(files_d);
-% display(fldrs)
+%display(fldrs)
 for j = 3:numel(fldrs)
-    if (isdir(strcat(files_d,fldrs(j).name)) && numel(strfind(fldrs(j).name,'_R')) == 0)      
+    if (isdir(strcat(files_d,fldrs(j).name)) && numel(strfind(fldrs(j).name,'BR_AHMED')) ~= 0)      
         files = dir(strcat(files_d,fldrs(j).name));
         for i = 3:numel(files)
             fname = files(i).name;

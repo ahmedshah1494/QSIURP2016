@@ -8,6 +8,7 @@ import logging
 import sys
 sys.path.append('libsvm-3.21/tools')
 import grid
+import matplotlib.pyplot as plt
 
 def parseSVM(filename):
 	with open(filename, 'r') as f:
@@ -366,11 +367,75 @@ def doBinaryCrossVal(files):
 						trainData.append((data,trainLabels))
 					doBinaryTest(trainData, testFolders, f_res=f_res, svmLabels=['BR','BH','O','P'])
 			break
+
+def checkCrossVal(filename):
+	f = open('results/' + filename)
+	lines = f.readlines()
+	f.close()
+
+	FalseNegatives = []
+	truePositives = []
+	i = 4
+	while i<len(lines):
+		mat = []
+		for j in range(i,i+4):
+			row = lines[j]
+			row = filter(lambda x: x!='[' and x!=']',row)
+			row = map(int,row.split(','))
+			mat.append(row)
+		FNperFile = 0
+		TPperFile = 0
+		for j in range(len(mat)):
+			FNperFile += float(sum(mat[j]) - mat[j][j])
+			TPperFile += float(mat[j][j])
+		FalseNegatives.append(FNperFile / sum(map(sum,mat)))
+		truePositives.append(TPperFile / sum(map(sum,mat)))
+		i += len(mat) + 4
+	# print FalseNegatives
+
+	accs = map(float,filter(lambda x : '[' not in x and '.' in x, lines))
+	misses = map(float,filter(lambda x : '[' not in x and '.' not in x, lines))
+	print "maximum accuracy: %f" % (max(accs))
+	print "minimum accuracy: %f" % (min(accs))
+	print "average accuracy: %f" % (float(sum(accs))/len(accs))
+	print "accuracy variance: %f" % np.var(accs)
+	print "maximum misses: %f" % (max(misses))
+	print "minimum misses: %f" % (min(misses))
+	print "average misses: %f" % (float(sum(misses))/len(misses))
+	print "miss variance: %f" % np.var(misses)
+	print "maximum False Negatives: %f%% line: %d" % (max(FalseNegatives), (np.argmax(FalseNegatives) * 8) + 1)
+	print "minimum False Negatives: %f%% line: %d" % (min(FalseNegatives), (np.argmin(FalseNegatives) * 8) + 1)
+	print "Average False Negatives: %f%%" % (np.mean(FalseNegatives))
+	print "maximum True Positives: %f%% line: %d" % (max(truePositives), (np.argmax(truePositives) * 8) + 1)
+	print "minimum True Positives: %f%% line: %d" % (min(truePositives), (np.argmin(truePositives) * 8) + 1)
+	print "Average True Positives: %f%%" % (np.mean(truePositives))
+
+	bins = [0]*20
+	for acc in accs:
+		bins[int(acc * 100) / 5] += 1
+	print bins
+	plt.figure(0)
+	plt.bar(range(0,100,5),bins, 5)
+	plt.ylabel("Number of Files")
+	plt.xlabel("Accuracy (%)")
+	plt.title(filename)
+	plt.savefig('results/' + filename[:-3] + '.png',format='png')
+
+	for tp in truePositives:
+		bins[int(tp * 100) / 5] += 1
+	bins = map(lambda x : float(x) * 100 / sum(bins), bins)
+	print bins
+	plt.figure(1)
+	plt.bar(range(0,100,5),bins, 5, color='red')
+	plt.ylabel("Percentage of Files")
+	plt.xlabel("True Positives (%)")
+	plt.title(filename+"-TruePositives")
+	plt.savefig('results/' + filename[:-3] + '-TruePositives.png',format='png')
 # svm = learn('PvBH.quant.svm.train')
 # print test('P_2012_H.quant',svm)
 # print doTests(filter(lambda x : 'Nquant.svm.train' in x and "SH" not in x, os.listdir('files/DataSets')),['BR_LB2_H/','BH_2152_H/', 'O_1018_H/', 'P_CS_H/'])
 # doMultiClassTest('multiclass.train',['BR_LB2_H/','BH_2152_H/', 'O_1018_H/', 'P_CS_H/'])
 # doPhysicalCharacteristicTest(filter(lambda x : 'Nquant.svm.train' in x and 'windows' not in x, os.listdir('files/DataSets/physical/')),['BR_LB2_H/','BH_2152_H/','O_1018_H/', 'P_CS_H/'])
 # print doBinaryTest(filter(lambda x : 'svm.train' in x and "SH" not in x and 'v' not in x.split('.')[0], os.listdir('files/DataSets')),['BR_LB2_H/','BH_2152_H/', 'O_1018_H/', 'P_CS_H/'])
-doBinaryCrossVal(filter(lambda x : 'CV' in x and '.svm.train' in x, os.listdir('files/DataSets')))
-
+# doBinaryCrossVal(filter(lambda x : 'CV' in x and '.svm.train' in x, os.listdir('files/DataSets')))
+checkCrossVal("KMSVM_NORM_BINARY_NoMiniBatch_CV-SH.txt")
