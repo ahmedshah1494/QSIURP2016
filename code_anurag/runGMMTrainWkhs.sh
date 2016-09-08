@@ -3,7 +3,7 @@
 #this uses the qsub to submit jobs
 #Remember - For Each Fold - the GMM is trained on rest of folds. So GMM stored in fold1  is trained on all folds except fold1.
 
-nComp=128
+nComp=256
 trds=ESC-10
 fldsz=4
 qsz=hplong
@@ -72,8 +72,8 @@ elif [ "$WorF" == "Folds" ];then
 
 		# gmmfolder=$gmbsdr/fold$f/$gmstr
 		cd ..
-		python code_anurag/GMMSklearn.py $posFileList 256 train GMMs/$c/fold_$f/P/ &
-		python code_anurag/GMMSklearn.py $negFileList 256 train GMMs/$c/fold_$f/N/ &
+		python code_anurag/GMMSklearn.py $posFileList $nComp train GMMs/$c/fold_$f/P/ &
+		python code_anurag/GMMSklearn.py $negFileList $nComp train GMMs/$c/fold_$f/N/ &
 	 #    	echo $gmmfolder
 		# qsub -q $qsz -N $evJbnm -e $errPt -o $outPt -v slist=$tmpsupfl,wlist=$tmpwekfl,mglist=$combfl,nCmp=$nComp,gmfold=$gmmfolder,logf=$logfl GMMTrainWkhs.sh
 	 #    #echo "$evJbnm submitted"
