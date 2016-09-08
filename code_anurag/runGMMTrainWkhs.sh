@@ -70,6 +70,8 @@ elif [ "$WorF" == "Folds" ];then
 		outPt=$errd/"out."$evJbnm
 		logfl=$log/"log."$evJbnm
 
+		sed -i.bak "s|files/|../files/|" $posFileList
+        sed -i.bak "s|files/|../files/|" $negFileList
 		# gmmfolder=$gmbsdr/fold$f/$gmstr
 		# cd ..
 		# python code_anurag/GMMSklearn.py $posFileList $nComp train GMMs/$c/fold_$f/P/ &
