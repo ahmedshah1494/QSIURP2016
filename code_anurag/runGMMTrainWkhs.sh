@@ -71,7 +71,7 @@ elif [ "$WorF" == "Folds" ];then
 		logfl=$log/"log."$evJbnm
 
 		# gmmfolder=$gmbsdr/fold$f/$gmstr
-		cd ..
+		# cd ..
 		# python code_anurag/GMMSklearn.py $posFileList $nComp train GMMs/$c/fold_$f/P/ &
 		# python code_anurag/GMMSklearn.py $negFileList $nComp train GMMs/$c/fold_$f/N/ &
 	 #    	echo $gmmfolder
