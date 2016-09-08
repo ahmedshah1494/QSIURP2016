@@ -78,8 +78,8 @@ elif [ "$WorF" == "Folds" ];then
 		# python code_anurag/GMMSklearn.py $negFileList $nComp train GMMs/$c/fold_$f/N/ &
 	 #    	echo $gmmfolder
 		# qsub -q $qsz -N $evJbnm -e $errPt -o $outPt -v slist=$tmpsupfl,wlist=$tmpwekfl,mglist=$combfl,nCmp=$nComp,gmfold=$gmmfolder,logf=$logfl GMMTrainWkhs.sh
-	 	qsub -q hp -N GMM-test_P -e $errPt -o $outPt -v inFileList=$posFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/P/,logf=$logfl GMMTrainWkhs.sh
-	 	qsub -q hp -N GMM-test_N -e $errPt -o $outPt -v inFileList=$negFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/N/,logf=$logfl GMMTrainWkhs.sh
+	 	qsub -q hp -N GMM-test_P -e "P."$errPt -o $outPt -v inFileList=$posFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/P/,logf=$logfl GMMTrainWkhs.sh
+	 	qsub -q hp -N GMM-test_N -e "N."$errPt -o $outPt -v inFileList=$negFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/N/,logf=$logfl GMMTrainWkhs.sh
 	 #    #echo "$evJbnm submitted"
 		
 	    done
