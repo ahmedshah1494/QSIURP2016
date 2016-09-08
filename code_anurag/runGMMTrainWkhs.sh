@@ -66,16 +66,18 @@ elif [ "$WorF" == "Folds" ];then
 		# combfl=temp/$trds.fold$f.gtrain.Full.$nComp$listend.merge
 		
 		# evJbnm=$trds"."$f"."$nComp
-		# errPt=$errd/"err."$evJbnm
-		# outPt=$errd/"out."$evJbnm
-		# logfl=$log/"log."$evJbnm
+		errPt=$errd/"err."$evJbnm
+		outPt=$errd/"out."$evJbnm
+		logfl=$log/"log."$evJbnm
 
 		# gmmfolder=$gmbsdr/fold$f/$gmstr
 		cd ..
-		python code_anurag/GMMSklearn.py $posFileList $nComp train GMMs/$c/fold_$f/P/ &
-		python code_anurag/GMMSklearn.py $negFileList $nComp train GMMs/$c/fold_$f/N/ &
+		# python code_anurag/GMMSklearn.py $posFileList $nComp train GMMs/$c/fold_$f/P/ &
+		# python code_anurag/GMMSklearn.py $negFileList $nComp train GMMs/$c/fold_$f/N/ &
 	 #    	echo $gmmfolder
 		# qsub -q $qsz -N $evJbnm -e $errPt -o $outPt -v slist=$tmpsupfl,wlist=$tmpwekfl,mglist=$combfl,nCmp=$nComp,gmfold=$gmmfolder,logf=$logfl GMMTrainWkhs.sh
+	 	qsub -q hp -N GMM-test_P -e $errPt -o $outPt -v inFileList=$posFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/P/,logf=$logfl GMMTrainWkhs.sh
+	 	qsub -q hp -N GMM-test_N -e $errPt -o $outPt -v inFileList=$negFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/N/,logf=$logfl GMMTrainWkhs.sh
 	 #    #echo "$evJbnm submitted"
 		
 	    done

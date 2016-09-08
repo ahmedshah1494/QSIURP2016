@@ -8,4 +8,4 @@ cd $PBS_O_WORKDIR
 
 #echo $slist
 
-python GMMSklearnSWSL.py $slist $wlist $mglist $nCmp $gmfold > $logf
+python GMMSklearn.py $inFileList $nCmp train $outFile > $logf

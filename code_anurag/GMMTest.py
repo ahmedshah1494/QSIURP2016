@@ -44,8 +44,10 @@ def testFiles(filelist, gmmFileDir, ncomps, outfile):
 		ll_P = sum(gmm_P.score(data))
 		ll_N = sum(gmm_N.score(data))
 		
-		for i in range(len(ll_P)):
-			out.write(str(ll_p[i])+ str(ll_P[i]) + '\n')
+		label = "N"
+		if ll_P > ll_N:
+			label = 'P'
+		out.write(str(ll_P)+ str(ll_N) + '\n')
 	out.close()
 
 testFiles('../files/folds/BR/BR_p.fold0', '../GMMs/BR/fold_0/', 1, "test_result.txt")
