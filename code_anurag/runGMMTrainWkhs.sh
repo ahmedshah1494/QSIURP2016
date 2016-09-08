@@ -3,9 +3,9 @@
 #this uses the qsub to submit jobs
 #Remember - For Each Fold - the GMM is trained on rest of folds. So GMM stored in fold1  is trained on all folds except fold1.
 
-nComp=256
+nComp=1
 trds=ESC-10
-fldsz=4
+fldsz=2
 qsz=hplong
 gmstr=sklearn
 WorF=Folds # Full/Folds for supdata -- for weakdata it is always Full
