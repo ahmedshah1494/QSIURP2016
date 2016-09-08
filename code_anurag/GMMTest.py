@@ -44,8 +44,8 @@ def testFiles(filelist, gmmFileDir, ncomps, outfile):
 		ll_P = sum(gmm_P.score(data))
 		ll_N = sum(gmm_N.score(data))
 		
-		for i in range(len(results_P)):
-			out.write(str(results_P[i])+ str(results_N[i]) + '\n')
+		for i in range(len(ll_P)):
+			out.write(str(ll_p[i])+ str(ll_P[i]) + '\n')
 	out.close()
 
 testFiles('../files/folds/BR/BR_p.fold0', '../GMMs/BR/fold_0/', 1, "test_result.txt")
