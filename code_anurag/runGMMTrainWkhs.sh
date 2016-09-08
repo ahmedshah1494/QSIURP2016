@@ -5,7 +5,7 @@
 
 nComp=128
 trds=ESC-10
-fldsz=1
+fldsz=4
 qsz=hplong
 gmstr=sklearn
 WorF=Folds # Full/Folds for supdata -- for weakdata it is always Full
@@ -72,8 +72,8 @@ elif [ "$WorF" == "Folds" ];then
 
 		# gmmfolder=$gmbsdr/fold$f/$gmstr
 		cd ..
-		python code_anurag/GMMSklearn.py $posFileList 1 train GMMs/$c/P/
-		python code_anurag/GMMSklearn.py $negFileList 1 train GMMs/$c/N/
+		python code_anurag/GMMSklearn.py $posFileList 256 train GMMs/$c/fold_$f/P/ &
+		python code_anurag/GMMSklearn.py $negFileList 256 train GMMs/$c/fold_$f/N/ &
 	 #    	echo $gmmfolder
 		# qsub -q $qsz -N $evJbnm -e $errPt -o $outPt -v slist=$tmpsupfl,wlist=$tmpwekfl,mglist=$combfl,nCmp=$nComp,gmfold=$gmmfolder,logf=$logfl GMMTrainWkhs.sh
 	 #    #echo "$evJbnm submitted"
