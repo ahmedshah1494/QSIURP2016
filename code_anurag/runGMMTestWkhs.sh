@@ -5,6 +5,9 @@ fldz=$(seq 1 1)
 nComps=1
 one=1
 currDir=$(pwd)
+errd="errflsGMM"
+log="logflsGMM"
+
 for c in "${classes[@]}"
 do
 	for f in $fldz
