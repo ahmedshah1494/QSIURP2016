@@ -50,6 +50,7 @@ def testFiles(filelist, ncomps, outfile, label,gmmFileDir):
 
 if __name__ == "__main__":
     if len(sys.argv) < 6:
+    	print "args < 6"
         print "arg1 - in file list, arg2 - nComp, arg3 - output file, argv4-actaul label, argv5-gmm output Folder"
         sys.exit()
     if len(sys.argv) == 6:
