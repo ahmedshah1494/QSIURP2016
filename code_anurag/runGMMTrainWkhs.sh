@@ -41,7 +41,7 @@ elif [ "$WorF" == "Folds" ];then
 	    do
 	    f=$(($f-$one))
 	    # echo $f
-	    cd $suplist/$c
+	    cd $suplist/$c/NormalizedHandsOnly
 	    # mkdir -p temp/$c
 	    posFiles=$(find -maxdepth 1 -regex '.*'$c'_p.fold+[^'$f']')
 	    negFiles=$(find -maxdepth 1 -regex '.*'$c'_n.fold+[^'$f']')
@@ -78,8 +78,8 @@ elif [ "$WorF" == "Folds" ];then
 		# python code_anurag/GMMSklearn.py $negFileList $nComp train GMMs/$c/fold_$f/N/ &
 	 #    	echo $gmmfolder
 		# qsub -q $qsz -N $evJbnm -e $errPt -o $outPt -v slist=$tmpsupfl,wlist=$tmpwekfl,mglist=$combfl,nCmp=$nComp,gmfold=$gmmfolder,logf=$logfl GMMTrainWkhs.sh
-	 	qsub -q hp -N GMM-test_P -e $errPt".P" -o $outPt -v inFileList=$posFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/P/,logf=$logfl GMMTrainWkhs.sh
-	 	qsub -q hp -N GMM-test_N -e $errPt".N" -o $outPt -v inFileList=$negFileList,nCmp=$nComp,outFile=GMMs/$c/fold_$f/N/,logf=$logfl GMMTrainWkhs.sh
+	 	qsub -q hp -N GMM-test_P -e $errPt".P" -o $outPt -v inFileList=$posFileList,nCmp=$nComp,outFile=GMMs/NormalizedHandsOnly/$c/fold_$f/P/,logf=$logfl GMMTrainWkhs.sh
+	 	qsub -q hp -N GMM-test_N -e $errPt".N" -o $outPt -v inFileList=$negFileList,nCmp=$nComp,outFile=GMMs/NormalizedHandsOnly/$c/fold_$f/N/,logf=$logfl GMMTrainWkhs.sh
 	 #    #echo "$evJbnm submitted"
 		
 	    done
