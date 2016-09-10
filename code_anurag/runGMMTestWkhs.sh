@@ -14,18 +14,12 @@ do
 	do
 		f=$(($f-$one))
 
-		gmmDir="../GMMs/NormalizedHandsOnly/$c/fold_$f/"
-		resultDir="results/NormalizedHandsOnly/$c/fold_$f/$nComps/"
-		
-		# gmmDir="../GMMs/$c/fold_$f/"
-		# resultDir="results/$c/fold_$f/$nComps/"
+		gmmDir="../GMMs/$c/fold_$f/"
+		resultDir="results/$c/fold_$f/$nComps/"
 		mkdir -p $resultDir
 
-		posFile=../files/folds/$c/NormalizedHandsOnly/$c"_p.fold"$f
-		negFile=../files/folds/$c/NormalizedHandsOnly/$c"_n.fold"$f
-
-		# posFile=../files/folds/$c/$c"_p.fold"$f
-		# negFile=../files/folds/$c/$c"_n.fold"$f
+		posFile=../files/folds/$c/$c"_p.fold"$f
+		negFile=../files/folds/$c/$c"_n.fold"$f
 
 		errPt=$errd/"err."$evJbnm
 		outPt=$errd/"out."$evJbnm
