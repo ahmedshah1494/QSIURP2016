@@ -1,4 +1,5 @@
 import os
+import sys
 d = 'files/'
 files = os.listdir(d)
 dic = {'SH' : filter(lambda x : (x.split('_')[0] == 'SH') and os.path.isdir(d+x) and '_M' not in x and '_R' not in x, files),
@@ -27,11 +28,13 @@ def makeFoldLists(n):
 def makeFolds():
 	foldFiles = os.listdir('files/folds/')
 	foldFiles = filter(lambda x: 'fold_' in x, foldFiles)
-
+	subFolder = "64ms"
 	for c1 in rooms:
 		for i in range(len(foldFiles)):
-			f_fold_p = open('files/folds/%s/%s_p.fold%d' % (c1,c1,i), 'w')
-			f_fold_n = open('files/folds/%s/%s_n.fold%d' % (c1,c1,i), 'w')
+			if not os.path.exists("files/folds/%s/%s/" % (c1,subFolder)):
+				os.mkdir("files/folds/%s/%s/" % (c1,subFolder))
+			f_fold_p = open('files/folds/%s/%s/%s_p.fold%d' % (c1,subFolder,c1,i), 'w')
+			f_fold_n = open('files/folds/%s/%s/%s_n.fold%d' % (c1,subFolder,c1,i), 'w')
 			ff = foldFiles[i]
 			f = open('files/folds/'+ff, 'r')
 			folders = map(lambda x: x[:-1], f.readlines())
@@ -39,7 +42,12 @@ def makeFolds():
 			for folder in folders:
 				dataFiles = map(lambda x: ('files/%s_H/' % folder) + x, os.listdir('files/%s_H/' % folder))
 				dataFiles += map(lambda x: ('files/%s_P/' % folder) + x, os.listdir('files/%s_P/' % folder))
-				dataFiles = filter(lambda x: x.split('.')[-1] == 'feat', dataFiles)
+				# if os.path.exists('files/%s_H_M/' % folder):
+				# 	dataFiles += map(lambda x: ('files/%s_H_M/' % folder) + x, os.listdir('files/%s_H_M/' % folder))
+				# 	dataFiles += map(lambda x: ('files/%s_P_M/' % folder) + x, os.listdir('files/%s_P_M/' % folder))
+				# if os.path.exists('files/%s_H_M/' % folder):
+				# 	dataFiles += map(lambda x: ('files/%s_H_M/' % folder) + x, os.listdir('files/%s_H_M/' % folder))
+				dataFiles = filter(lambda x: x.split('.')[-1] == 'feat64ms', dataFiles)
 				# print dataFiles
 				for dataFile in dataFiles:
 					if folder.split('_')[0] == c1:
@@ -48,6 +56,6 @@ def makeFolds():
 					else:
 						# label = "-1"
 						f_fold_n.write(dataFile+'\n')
-# makeFoldLists(4)
+makeFoldLists(4)
 makeFolds()
 

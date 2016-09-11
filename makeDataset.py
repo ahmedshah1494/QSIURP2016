@@ -2,7 +2,7 @@ import os
 from random import shuffle
 import math
 import numpy as np
-from parallelGMM import learn
+# from parallelGMM import learn
 
 d = 'files/'
 files = os.listdir('files/')
@@ -14,8 +14,12 @@ def csv2svm(class_idx, line):
 	line = str(class_idx) + ' ' + reduce(lambda x,y: x + ' ' + y, line)
 	return line
 
-def makeFeatFiles(filterBy=None, normalize=False, C_0=False):
+def makeFeatFiles(filterBy=None, normalize=False, C_0=False, mfcc64=False):
 	files = os.listdir('files/')
+	if mfcc64:
+		feat_ext = "feat64ms"
+	else:
+		feat_ext = "feat"
 	if filterBy != None:
 		files = filter(filterBy,files)
 	for f in files:
@@ -25,17 +29,20 @@ def makeFeatFiles(filterBy=None, normalize=False, C_0=False):
 			wavs = filter(lambda x : x.split('.')[-1] == "wav",dataFiles)
 
 			if normalize:
-				f_data = open(d+f+".Nfeat",'w')
+				f_data = open(d+f+".N"+feat_ext,'w')
 			if C_0:
-				f_data = open(d+f+".Cfeat",'w')
+				f_data = open(d+f+".C"+feat_ext,'w')
 			else:
-				f_data = open(d+f+".feat",'w')
+				f_data = open(d+f+"."+feat_ext,'w')
 
 			for j in range(len(wavs)):
 				wav = wavs[j]
 				# print wav
 				
-				f_mfcc = open(d+f+'/'+wav+".mfcc", 'r')
+				if mfcc64:
+					f_mfcc = open(d+f+'/'+wav+".mfcc64ms", 'r')
+				else:
+					f_mfcc = open(d+f+'/'+wav+".mfcc", 'r')
 				# f_fbe = open(d+f+'/'+wav+".fbe",'r')
 				lines_mfcc = f_mfcc.readlines()
 				lines_mfcc = filter(lambda x : 'NaN' not in x and 'nan' not in x, lines_mfcc)
@@ -69,7 +76,10 @@ def makeFeatFiles(filterBy=None, normalize=False, C_0=False):
 						f_feat.write(lines_mfcc[i][:-1]+'\n')
 						f_data.write(lines_mfcc[i][:-1]+'\n')
 				else:
-					f_feat = open(d+f+'/'+wav+".feat",'w')
+					if mfcc64:
+						f_feat = open(d+f+'/'+wav+".feat64ms",'w')
+					else:
+						f_feat = open(d+f+'/'+wav+".feat",'w')
 					for i in range(len(lines_mfcc)):
 						# f_feat.write(lines_mfcc[i][:-1] + ',' +lines_fbe[i][:-1] + '\n')
 						# f_data.write(lines_mfcc[i][:-1] + ',' + lines_fbe[i][:-1] + '\n')
@@ -598,7 +608,7 @@ if __name__ == '__main__':
 	# makeDiffFeatFiles(lambda x : "_R" not in x)			
 	# makeFeatFiles(lambda x : "2152" in x or "2147" in x or "1185" in x)
 	# makeDiffFeatFiles(lambda x : "2152" in x or "2147" in x or "1185" in x)
-	# makeFeatFiles(lambda x : "_R" not in x, C_0=True)
+	makeFeatFiles(lambda x : "_R" not in x)
 	# makeQuantFeatFiles(lambda x : "_R" not in x,normalize=True)
 	files = os.listdir(d)
 	dic = {'SH' : filter(lambda x : (x.split('_')[0] == 'SH') and os.path.isdir(d+x) and (x.split('_')[2] == 'H'), files),
@@ -625,7 +635,7 @@ if __name__ == '__main__':
 	# dic = {"LectureHall": ['1030','1202','2052','1190','2152'],
 	# 		'Bathroom': ['Bathroom_lockers','Bathroom2_locker']}
 	# print dic
-	makeCrossValidationDataSet(dic,normalize=True,quantized=True)
+	# makeCrossValidationDataSet(dic,normalize=True,quantized=True)
 	# makeUniversalDataSet(dic, normalize=True)
 	# makeSuperVectorFiles(dic,4)
 	# makeSuperVectorDataSet(dic)
